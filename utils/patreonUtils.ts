@@ -32,7 +32,7 @@ export async function getPatreonPostUrls(url: string) {
 
 export const getPosts = async (url: string): Promise<Post[]> => {
     const posts: Post[] = [];
-    
+    let processingPost: Post;
     // Create an instance of the downloader
     const downloader = await PatreonDownloader.getInstance(url, {
         logger: new ConsoleLogger({ logLevel: 'info' }),
@@ -46,7 +46,13 @@ export const getPosts = async (url: string): Promise<Post[]> => {
         // Check if the target is a post, we need to download video from posts
         if (target.type === 'post') {
             posts.push(target);
+            processingPost = target;
         }
+    })
+
+    downloader.on('end', ({aborted, error, message}: { aborted: true; error?: undefined; message: string; } | { aborted: false; error?: any; message: string; }) => {
+        const errorMessage = `Error occurred: ${aborted}: ${error}: ${message}`;
+        console.warn(errorMessage);
     })
 
     // Start the downloader

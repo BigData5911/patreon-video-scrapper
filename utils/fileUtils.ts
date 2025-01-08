@@ -14,3 +14,17 @@ export const saveJsonToFile = (data: any, filename: string) => {
         }
     });
 }
+
+// Function to log errors to a file
+export const logErrorToFile = (errorMessage: string) => {
+    const logFilePath = path.join('error.log');
+    const timestamp = new Date().toISOString();
+    const logMessage = `${timestamp} - ${errorMessage}\n`;
+
+    // Append the error message to the error.log file
+    fs.appendFile(logFilePath, logMessage, (err) => {
+        if (err) {
+            console.error('Failed to write to error.log:', err);
+        }
+    });
+};
