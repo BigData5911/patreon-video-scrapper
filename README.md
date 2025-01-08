@@ -1,0 +1,2 @@
+- [How to obtain patreon cookies](https://github.com/patrickkfkan/patreon-dl/wiki/How-to-obtain-Cookie)
+- [Youtube external download provider](https://github.com/patrickkfkan/patreon-dl/blob/master/docs/Library.md#external-downloaders)
