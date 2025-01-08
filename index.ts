@@ -1,8 +1,9 @@
-import { saveJsonToFile } from './utils/file';
-import { downloadFromPatreon, getPosts } from './utils/patreolUtils';
+import { saveJsonToFile } from './utils/fileUtils';
+import { downloadFromPatreon, getPosts } from './utils/patreonUtils';
 
 const postUrl = 'https://www.patreon.com/c/kobeon/posts';
 
+// Download the post from patreon
 // downloadFromPatreon(postUrl, process.env.PATREON_OUTPUT_DIR || "patreonPosts");
 
 // fetching posts from patreon and save it to json file
