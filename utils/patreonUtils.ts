@@ -1,6 +1,8 @@
 import PatreonDownloader from 'patreon-dl';
 import { ConsoleLogger, Post, Campaign, Product } from 'patreon-dl';
 import { PATREON_COOKIE } from '../config'
+import { patreonApi } from './patreonApiUtils';
+
 
 export async function  downloadFromPatreon (url: string, outputDir: string) {
     const myLogger = new ConsoleLogger({
@@ -15,19 +17,6 @@ export async function  downloadFromPatreon (url: string, outputDir: string) {
     });
     
     await downloader.start();
-}
-
-export async function getPatreonPostUrls(url: string) {
-    const downloader = await PatreonDownloader.getInstance(url, {
-        outDir: 'patreonPosts', // Specify the output directory
-        cookie: PATREON_COOKIE, // Use the environment variable for the cookie
-        include: { contentMedia: ["video", "image"] } // Include media types if needed
-    });
-    
-    // const posts = await downloader.start(); // Fetch posts
-    // const postUrls = posts.map(post => post.url); // Extract URLs from posts
-
-    // console.log(postUrls); // Print the URLs
 }
 
 
@@ -59,3 +48,14 @@ export const getPosts = async (url: string): Promise<Post[]> => {
 
     return posts;
 };
+
+export const getPostMetadata = async (id: string): Promise<object> => {
+    try {
+        // Make a GET request to the Patreon API to fetch the post metadata with cookie
+        const response = await patreonApi.get(`https://www.patreon.com/api/posts/${id}`)
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching post metadata:', error);
+        throw error;
+    }
+}
