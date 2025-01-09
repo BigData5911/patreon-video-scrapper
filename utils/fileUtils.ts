@@ -15,6 +15,14 @@ export const saveJsonToFile = (data: any, filename: string) => {
     });
 }
 
+export const loadJsonFile = (filename: string) => {
+    // Read the JSON file
+    const rawData = fs.readFileSync(filename, 'utf8');
+    // Parse the JSON data
+    const jsonData = JSON.parse(rawData);
+    return jsonData;
+}
+
 // Function to log errors to a file
 export const logErrorToFile = (errorMessage: string) => {
     const logFilePath = path.join('error.log');

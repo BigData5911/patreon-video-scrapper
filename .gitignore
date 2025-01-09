@@ -1,6 +1,4 @@
-patreolPosts
-yt-credentials.json
-.env
 node_modules
-cookies.txt
-posts.json
+.env
+data
+credentials
