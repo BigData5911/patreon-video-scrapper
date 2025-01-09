@@ -1,5 +1,6 @@
 import PatreonDownloader from 'patreon-dl';
 import { ConsoleLogger, Post, Campaign, Product } from 'patreon-dl';
+import { PATREON_COOKIE } from '../config'
 
 export async function  downloadFromPatreon (url: string, outputDir: string) {
     const myLogger = new ConsoleLogger({
@@ -7,10 +8,10 @@ export async function  downloadFromPatreon (url: string, outputDir: string) {
     });
     const downloader = await PatreonDownloader.getInstance(url, {
         "logger": myLogger,
-        "outDir": "patreolPosts",
-        "cookie": process.env.PATREOL_COOKIE,
+        "outDir": outputDir,
+        "cookie": PATREON_COOKIE,
         "pathToYouTubeCredentials": 'yt-credentials.json',
-        "include": {"contentMedia": ["video"]}
+        "include": {"contentMedia": ["video", "image"]}
     });
     
     await downloader.start();
@@ -19,7 +20,7 @@ export async function  downloadFromPatreon (url: string, outputDir: string) {
 export async function getPatreonPostUrls(url: string) {
     const downloader = await PatreonDownloader.getInstance(url, {
         outDir: 'patreonPosts', // Specify the output directory
-        cookie: process.env.PATREOL_COOKIE, // Use the environment variable for the cookie
+        cookie: PATREON_COOKIE, // Use the environment variable for the cookie
         include: { contentMedia: ["video", "image"] } // Include media types if needed
     });
     
@@ -32,7 +33,6 @@ export async function getPatreonPostUrls(url: string) {
 
 export const getPosts = async (url: string): Promise<Post[]> => {
     const posts: Post[] = [];
-    let processingPost: Post;
     // Create an instance of the downloader
     const downloader = await PatreonDownloader.getInstance(url, {
         logger: new ConsoleLogger({ logLevel: 'info' }),
@@ -46,7 +46,6 @@ export const getPosts = async (url: string): Promise<Post[]> => {
         // Check if the target is a post, we need to download video from posts
         if (target.type === 'post') {
             posts.push(target);
-            processingPost = target;
         }
     })
 
